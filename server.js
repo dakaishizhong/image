@@ -33,7 +33,7 @@ app.post('/api/generate-image', async (req, res) => {
 
     const {
         prompt,
-        negativePrompt = "",
+        //negativePrompt = "",
         aspectRatio = "1:1",
         modelId
     } = req.body;
@@ -57,9 +57,9 @@ app.post('/api/generate-image', async (req, res) => {
             instances: [{ "prompt": prompt }],
             parameters: {
                 "aspectRatio": aspectRatio,
-                "enhancePrompt": false,
+                //"enhancePrompt": false,
                 "sampleCount": 1,
-                "negativePrompt": negativePrompt,
+                //"negativePrompt": negativePrompt,
                 "addWatermark": true,
                 "language": "auto"
             }
