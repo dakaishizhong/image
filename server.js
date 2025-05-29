@@ -10,9 +10,9 @@ app.use(express.json());
 
 // --- IMPORTANT CONFIGURATION ---
 // !!! 请将 YOUR_ACTUAL_GOOGLE_CLOUD_PROJECT_ID 替换为您的真实 Google Cloud 项目 ID !!!
-const PROJECT_ID = "YOUR_ACTUAL_GOOGLE_CLOUD_PROJECT_ID";
+const PROJECT_ID = "nifty-might-456504-d2";
 const LOCATION_ID = "us-central1"; // The location of the model (e.g., us-central1)
-const DEFAULT_MODEL_ID = "imagen-4.0-ultra-generate-exp-05-20"; // Or "imagegeneration@006"
+const DEFAULT_MODEL_ID = "imagen-4.0-generate-preview-05-20"; // Or "imagen-4.0-ultra-generate-exp-05-20"
 // --- END IMPORTANT CONFIGURATION ---
 
 const AI_PLATFORM_ENDPOINT = `https://${LOCATION_ID}-aiplatform.googleapis.com`;
@@ -61,9 +61,9 @@ app.post('/api/generate-image', async (req, res) => {
                 "sampleCount": 1,
                 "negativePrompt": negativePrompt,
                 "addWatermark": true,
-                "safetySetting": "",
+                "safetySetting": "block_none",
                 "includeRaiReason": true,
-                "personGeneration": "",
+                "personGeneration": "allow_all",
                 "language": "auto"
             }
         };
