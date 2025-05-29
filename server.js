@@ -61,9 +61,6 @@ app.post('/api/generate-image', async (req, res) => {
                 "sampleCount": 1,
                 "negativePrompt": negativePrompt,
                 "addWatermark": true,
-                "safetySetting": "block_none",
-                "includeRaiReason": true,
-                "personGeneration": "allow_all",
                 "language": "auto"
             }
         };
