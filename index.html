@@ -36,7 +36,7 @@
         }
         .title-art {
             font-weight: 900;
-            color: #e0e0e0; /* 保持与主文本颜色一致或稍亮 */
+            color: #e0e0e0; 
         }
         textarea, select {
             background-color: #12182d; /* 更深的输入框背景 */
@@ -47,12 +47,12 @@
             color: #a0aec0;
         }
         select {
-            appearance: none; /* 移除默认箭头 */
+            appearance: none; 
             background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23e0e0e0%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.4-5.4-13z%22%2F%3E%3C%2Fsvg%3E');
             background-repeat: no-repeat;
             background-position: right 0.7rem center;
             background-size: 0.65em auto;
-            padding-right: 2.5rem; /* 为箭头腾出空间 */
+            padding-right: 2.5rem; 
         }
         .generate-button {
             background-color: #d147a3; /* 粉紫色按钮 */
@@ -63,7 +63,7 @@
         }
         .image-placeholder {
             border: 2px dashed #4a5568; /* 虚线边框 */
-            min-height: 200px; /* 最小高度 */
+            min-height: 200px; 
             display: flex;
             align-items: center;
             justify-content: center;
@@ -71,11 +71,11 @@
             color: #a0aec0;
         }
         .spinner {
-            border: 4px solid rgba(224, 224, 224, 0.2); /* 浅色边框 */
+            border: 4px solid rgba(224, 224, 224, 0.2); 
             width: 48px;
             height: 48px;
             border-radius: 50%;
-            border-left-color: #ee9ae5; /* 粉色加载条 */
+            border-left-color: #ee9ae5; 
             animation: spin 1s ease infinite;
             margin: 20px auto;
         }
@@ -85,9 +85,9 @@
         }
         .message-box {
             position: fixed;
-            bottom: 20px; /* 改为底部显示 */
+            bottom: 20px; 
             left: 50%;
-            transform: translateX(-50%) translateY(100px); /* 从下方滑入 */
+            transform: translateX(-50%) translateY(100px); 
             background-color: #ef4444; 
             color: white;
             padding: 1rem 1.5rem;
@@ -118,12 +118,23 @@
             <textarea id="prompt" name="prompt" rows="4" class="w-full p-3 border rounded-lg shadow-sm focus:ring-pink-500 focus:border-pink-500 transition duration-150 ease-in-out text-base" placeholder="一条雄伟的龙飞过一座像素化的城堡"></textarea>
         </div>
 
-        <div class="mb-8 text-left">
+        <div class="mb-6 text-left"> {/* 改为 mb-6 以保持间距 */}
             <label for="modelId" class="block text-sm font-medium text-slate-300 mb-2">选择生成模型：</label>
             <select id="modelId" name="modelId" class="w-full p-3 border rounded-lg shadow-sm focus:ring-pink-500 focus:border-pink-500 transition duration-150 ease-in-out text-base">
-                <option value="imagen-4.0-generate-preview-05-20" selected>Imagen 4 (预览版)</option>
-                <option value="imagen-4.0-ultra-generate-exp-05-20">Imagen 4 (实验版, ultra)</option>
-                <option value="imagen-3.0-generate-002">Imagen 3 (稳定版 005)</option>
+                <option value="imagen-4.0-generate-preview-05-20" selected>Imagen 4.0 (预览版)</option>
+                <option value="imagegeneration@006">Imagen 2 (稳定版 006)</option>
+                <option value="imagegeneration@005">Imagen 2 (稳定版 005)</option>
+            </select>
+        </div>
+
+        <div class="mb-8 text-left">
+            <label for="aspectRatio" class="block text-sm font-medium text-slate-300 mb-2">选择图像宽高比 (尺寸)：</label>
+            <select id="aspectRatio" name="aspectRatio" class="w-full p-3 border rounded-lg shadow-sm focus:ring-pink-500 focus:border-pink-500 transition duration-150 ease-in-out text-base">
+                <option value="1:1" selected>1:1 (正方形)</option>
+                <option value="16:9">16:9 (宽屏)</option>
+                <option value="9:16">9:16 (竖屏)</option>
+                <option value="4:3">4:3 (标准)</option>
+                <option value="3:4">3:4 (标准竖屏)</option>
             </select>
         </div>
         
@@ -150,6 +161,7 @@
     <script>
         const promptInput = document.getElementById('prompt');
         const modelIdSelect = document.getElementById('modelId');
+        const aspectRatioSelect = document.getElementById('aspectRatio'); // New: Aspect Ratio select element
         const generateButton = document.getElementById('generateButton');
         const loadingIndicator = document.getElementById('loadingIndicator');
         const imageResultDiv = document.getElementById('imageResult');
@@ -159,7 +171,7 @@
 
         function showMessage(message, type = 'error') {
             messageBox.textContent = message;
-            messageBox.className = 'message-box'; // Reset classes
+            messageBox.className = 'message-box'; 
             if (type === 'success') {
                 messageBox.classList.add('success');
             }
@@ -175,6 +187,7 @@
         generateButton.addEventListener('click', async () => {
             const promptText = promptInput.value.trim();
             const selectedModelId = modelIdSelect.value;
+            const selectedAspectRatio = aspectRatioSelect.value; // New: Get selected aspect ratio
 
             if (!promptText) {
                 showMessage('请输入您的像素艺术构想！');
@@ -182,18 +195,17 @@
             }
 
             loadingIndicator.style.display = 'block';
-            imageResultDiv.classList.remove('items-center', 'justify-center'); // Reset flex centering for placeholder
+            imageResultDiv.classList.remove('items-center', 'justify-center'); 
             generatedImage.style.display = 'none'; 
             placeholderText.style.display = 'none';
             generateButton.disabled = true;
             generateButton.classList.add('opacity-75', 'cursor-not-allowed');
 
-            // Backend expects negativePrompt and aspectRatio, but we are not sending them from UI.
-            // Backend server.js should use its defaults for these.
             const payload = {
                 prompt: promptText,
-                modelId: selectedModelId
-                // negativePrompt and aspectRatio will use backend defaults
+                modelId: selectedModelId,
+                aspectRatio: selectedAspectRatio // New: Send aspectRatio to backend
+                // negativePrompt will use backend defaults as it's not in the UI
             };
 
             try {
@@ -230,7 +242,6 @@
             } catch (error) {
                 console.error('调用后端 API 时发生错误:', error);
                 showMessage(`生成失败: ${error.message}`);
-                // Restore placeholder if error occurs
                 generatedImage.style.display = 'none';
                 placeholderText.style.display = 'block';
                 imageResultDiv.classList.add('items-center', 'justify-center');
