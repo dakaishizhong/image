@@ -60,7 +60,7 @@ app.post('/api/generate-image', async (req, res) => {
                 //"enhancePrompt": false,
                 "sampleCount": 1,
                 "negativePrompt": negativePrompt,
-                "safetySetting": "block_none",
+                //"safetySetting": "block_none",
                 "personGeneration": "allow_all",
                 "addWatermark": true,
                 "language": "auto"
