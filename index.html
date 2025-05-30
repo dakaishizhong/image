@@ -18,14 +18,14 @@
             padding: 1rem;
         }
         .container {
-            background-color: #232947; /* 稍浅的背景作为容器 */
-            padding: 3rem 2.5rem;
-            border-radius: 1.75rem; 
-            box-shadow: 1 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
-            width: 101%;
-            max-width: 601px; 
-            margin-top: 3rem; 
-            margin-bottom: 3rem;
+            background-color: #232946; /* 稍浅的背景作为容器 */
+            padding: 2rem 2.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 600px;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
         }
         .title-pixel {
             font-weight: 900;
@@ -36,23 +36,33 @@
         }
         .title-art {
             font-weight: 900;
-            color: #e0e0e0; 
+            color: #e0e0e0;
         }
-        textarea, select {
+        textarea, select, input[type="text"] { /* 确保 input[type="text"] 也应用样式 */
             background-color: #12182d; /* 更深的输入框背景 */
             border: 1px solid #4a5568; /* 边框颜色 */
             color: #e0e0e0;
+            padding: 0.75rem; /* 统一内边距 */
+            border-radius: 0.5rem; /* 统一圆角 */
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.075);
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+            width: 100%; /* 确保所有输入框宽度一致 */
         }
-        textarea::placeholder {
+        textarea::placeholder, input[type="text"]::placeholder {
             color: #a0aec0;
         }
         select {
-            appearance: none; 
+            appearance: none;
             background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23e0e0e0%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.4-5.4-13z%22%2F%3E%3C%2Fsvg%3E');
             background-repeat: no-repeat;
             background-position: right 0.7rem center;
             background-size: 0.65em auto;
-            padding-right: 2.5rem; 
+            padding-right: 2.5rem;
+        }
+        textarea:focus, select:focus, input[type="text"]:focus {
+             border-color: #d147a3; /* 粉色焦点边框 */
+             outline: 0;
+             box-shadow: 0 0 0 0.2rem rgba(209, 71, 163, 0.25);
         }
         .generate-button {
             background-color: #d147a3; /* 粉紫色按钮 */
@@ -63,7 +73,7 @@
         }
         .image-placeholder {
             border: 2px dashed #4a5568; /* 虚线边框 */
-            min-height: 200px; 
+            min-height: 200px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -71,11 +81,11 @@
             color: #a0aec0;
         }
         .spinner {
-            border: 4px solid rgba(224, 224, 224, 0.2); 
+            border: 4px solid rgba(224, 224, 224, 0.2);
             width: 48px;
             height: 48px;
             border-radius: 50%;
-            border-left-color: #ee9ae5; 
+            border-left-color: #ee9ae5;
             animation: spin 1s ease infinite;
             margin: 20px auto;
         }
@@ -85,10 +95,10 @@
         }
         .message-box {
             position: fixed;
-            bottom: 20px; 
+            bottom: 20px;
             left: 50%;
-            transform: translateX(-50%) translateY(100px); 
-            background-color: #ef4444; 
+            transform: translateX(-50%) translateY(100px);
+            background-color: #ef4444;
             color: white;
             padding: 1rem 1.5rem;
             border-radius: 0.5rem;
@@ -102,7 +112,13 @@
             transform: translateX(-50%) translateY(0);
         }
         .message-box.success {
-            background-color: #22c55e; 
+            background-color: #22c55e;
+        }
+        .input-group { /* 统一输入组的下边距 */
+            margin-bottom: 1.5rem;
+        }
+        .input-group:last-of-type { /* 最后一个输入组（宽高比选择）使用稍大的下边距，以便与按钮分隔 */
+             margin-bottom: 2rem;
         }
     </style>
 </head>
@@ -112,24 +128,29 @@
             <span class="title-pixel">像素</span><span class="title-art">艺术</span><span class="font-bold text-white">生成器</span>
         </h1>
         <p class="text-lg text-slate-400 mb-10">用AI的力量创造独特的像素杰作。</p>
-        
-        <div class="mb-6 text-left">
+
+        <div class="input-group text-left">
             <label for="prompt" class="block text-sm font-medium text-slate-300 mb-2">输入您的像素艺术构想：</label>
-            <textarea id="prompt" name="prompt" rows="4" class="w-full p-3 border rounded-lg shadow-sm focus:ring-pink-500 focus:border-pink-500 transition duration-150 ease-in-out text-base" placeholder="一条雄伟的龙飞过一座像素化的城堡"></textarea>
+            <textarea id="prompt" name="prompt" rows="4" class="w-full" placeholder="一条雄伟的龙飞过一座像素化的城堡"></textarea>
         </div>
 
-        <div class="mb-6 text-left"> {/* 改为 mb-6 以保持间距 */}
+        <div class="input-group text-left">
+            <label for="negativePrompt" class="block text-sm font-medium text-slate-300 mb-2">排除内容提示 (可选)：</label>
+            <input type="text" id="negativePrompt" name="negativePrompt" class="w-full" placeholder="例如：模糊, 低质量, 文字">
+        </div>
+
+        <div class="input-group text-left">
             <label for="modelId" class="block text-sm font-medium text-slate-300 mb-2">选择生成模型：</label>
-            <select id="modelId" name="modelId" class="w-full p-3 border rounded-lg shadow-sm focus:ring-pink-500 focus:border-pink-500 transition duration-150 ease-in-out text-base">
+            <select id="modelId" name="modelId" class="w-full">
                 <option value="imagen-4.0-generate-preview-05-20" selected>Imagen 4.0 (预览版)</option>
                 <option value="imagen-4.0-ultra-generate-exp-05-20">Imagen 4 (ultra)</option>
                 <option value="imagen-3.0-generate-002">Imagen 3</option>
             </select>
         </div>
 
-        <div class="mb-8 text-left">
-            <label for="aspectRatio" class="block text-sm font-medium text-slate-300 mb-2">选择图像宽高比 (尺寸)：</label>
-            <select id="aspectRatio" name="aspectRatio" class="w-full p-3 border rounded-lg shadow-sm focus:ring-pink-500 focus:border-pink-500 transition duration-150 ease-in-out text-base">
+        <div class="input-group text-left">
+            <label for="aspectRatio" class="block text-sm font-medium text-slate-300 mb-2">选择图像尺寸：</label>
+            <select id="aspectRatio" name="aspectRatio" class="w-full">
                 <option value="1:1" selected>1:1 (正方形)</option>
                 <option value="16:9">16:9 (宽屏)</option>
                 <option value="9:16">9:16 (竖屏)</option>
@@ -137,21 +158,21 @@
                 <option value="3:4">3:4 (标准竖屏)</option>
             </select>
         </div>
-        
+
         <button id="generateButton" class="w-full generate-button text-white font-semibold py-3 px-6 rounded-lg shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-opacity-75 transition duration-150 ease-in-out text-lg flex items-center justify-center">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 mr-2">
                 <path fill-rule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.39-3.423 3.522a.75.75 0 00.28 1.327l4.753.39 1.83 4.401c.321.772 1.415.772 1.736 0l1.83-4.401 4.753-.39 3.423-3.522a.75.75 0 00-.28-1.327l-4.753-.39-1.83-4.401z" clip-rule="evenodd" />
             </svg>
             生成像素图
         </button>
-        
+
         <div id="loadingIndicator" class="mt-8 text-slate-400" style="display: none;">
             <div class="spinner"></div>
             <p>像素艺术生成中，请稍候...</p>
         </div>
 
         <div id="messageBox" class="message-box"></div>
-        
+
         <div id="imageResult" class="mt-8 image-placeholder p-4 rounded-lg">
             <p id="placeholderText" class="text-slate-500">您生成的像素艺术将显示在此处。<br>在上方输入提示并点击“生成”来创造一些魔法吧！</p>
             <img id="generatedImage" src="#" alt="生成的像素图像" class="max-w-full h-auto mx-auto rounded-md shadow-lg" style="display: none;">
@@ -160,8 +181,9 @@
 
     <script>
         const promptInput = document.getElementById('prompt');
+        const negativePromptInput = document.getElementById('negativePrompt'); // 获取 negative prompt 输入框
         const modelIdSelect = document.getElementById('modelId');
-        const aspectRatioSelect = document.getElementById('aspectRatio'); // New: Aspect Ratio select element
+        const aspectRatioSelect = document.getElementById('aspectRatio');
         const generateButton = document.getElementById('generateButton');
         const loadingIndicator = document.getElementById('loadingIndicator');
         const imageResultDiv = document.getElementById('imageResult');
@@ -171,7 +193,7 @@
 
         function showMessage(message, type = 'error') {
             messageBox.textContent = message;
-            messageBox.className = 'message-box'; 
+            messageBox.className = 'message-box';
             if (type === 'success') {
                 messageBox.classList.add('success');
             }
@@ -179,15 +201,16 @@
 
             setTimeout(() => {
                 messageBox.classList.remove('show');
-            }, 5000); 
+            }, 5000);
         }
 
-        const BACKEND_API_URL = '/api/generate-image'; 
+        const BACKEND_API_URL = '/api/generate-image';
 
         generateButton.addEventListener('click', async () => {
             const promptText = promptInput.value.trim();
+            const negativePromptText = negativePromptInput.value.trim(); // 获取 negative prompt 的值
             const selectedModelId = modelIdSelect.value;
-            const selectedAspectRatio = aspectRatioSelect.value; // New: Get selected aspect ratio
+            const selectedAspectRatio = aspectRatioSelect.value;
 
             if (!promptText) {
                 showMessage('请输入您的像素艺术构想！');
@@ -195,17 +218,17 @@
             }
 
             loadingIndicator.style.display = 'block';
-            imageResultDiv.classList.remove('items-center', 'justify-center'); 
-            generatedImage.style.display = 'none'; 
+            imageResultDiv.classList.remove('items-center', 'justify-center');
+            generatedImage.style.display = 'none';
             placeholderText.style.display = 'none';
             generateButton.disabled = true;
             generateButton.classList.add('opacity-75', 'cursor-not-allowed');
 
             const payload = {
                 prompt: promptText,
+                negativePrompt: negativePromptText, // 将 negative prompt 发送到后端
                 modelId: selectedModelId,
-                aspectRatio: selectedAspectRatio // New: Send aspectRatio to backend
-                // negativePrompt will use backend defaults as it's not in the UI
+                aspectRatio: selectedAspectRatio
             };
 
             try {
