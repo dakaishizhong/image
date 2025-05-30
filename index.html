@@ -18,14 +18,14 @@
             padding: 1rem;
         }
         .container {
-            background-color: #232946; /* 稍浅的背景作为容器 */
-            padding: 2rem 2.5rem;
-            border-radius: 0.75rem; 
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
-            width: 100%;
-            max-width: 600px; 
-            margin-top: 2rem; 
-            margin-bottom: 2rem;
+            background-color: #232947; /* 稍浅的背景作为容器 */
+            padding: 3rem 2.5rem;
+            border-radius: 1.75rem; 
+            box-shadow: 1 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
+            width: 101%;
+            max-width: 601px; 
+            margin-top: 3rem; 
+            margin-bottom: 3rem;
         }
         .title-pixel {
             font-weight: 900;
@@ -118,12 +118,12 @@
             <textarea id="prompt" name="prompt" rows="4" class="w-full p-3 border rounded-lg shadow-sm focus:ring-pink-500 focus:border-pink-500 transition duration-150 ease-in-out text-base" placeholder="一条雄伟的龙飞过一座像素化的城堡"></textarea>
         </div>
 
-        <div class="mb-6 text-left"> 
+        <div class="mb-6 text-left"> {/* 改为 mb-6 以保持间距 */}
             <label for="modelId" class="block text-sm font-medium text-slate-300 mb-2">选择生成模型：</label>
             <select id="modelId" name="modelId" class="w-full p-3 border rounded-lg shadow-sm focus:ring-pink-500 focus:border-pink-500 transition duration-150 ease-in-out text-base">
                 <option value="imagen-4.0-generate-preview-05-20" selected>Imagen 4.0 (预览版)</option>
-                <option value="imagegeneration@006">Imagen 2 (稳定版 006)</option>
-                <option value="imagegeneration@005">Imagen 2 (稳定版 005)</option>
+                <option value="imagen-4.0-ultra-generate-exp-05-20">Imagen 4 (ultra)</option>
+                <option value="imagen-3.0-generate-002">Imagen 3</option>
             </select>
         </div>
 
